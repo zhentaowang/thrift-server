@@ -24,26 +24,6 @@ import java.util.Map;
  */
 public class ThriftClientUtils {
 
-    public static void invokeRemoteMethod(Map<String,Object> params,String serviceName, int port) {
-        try {
-            String hostName = "localhost";
-            TTransport transport = new TFramedTransport(new TSocket(hostName,
-                    port, 1000));
-            transport.open();
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            MyService.Client client = new MyService.Client(protocol);
-            Request request = new Request();
-            request.setServiceName(serviceName);
-            String strParams = JSONObject.toJSONString(params);
-            request.setParamJSON(byteChangeHelper.getBytes(strParams.toCharArray()));
-            client.send(request);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
     public static String invokeRemoteMethodCallBack(Map<String,Object> params, String serviceName,int port) {
         String result = null;
         try {
