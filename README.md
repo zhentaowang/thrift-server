@@ -22,6 +22,10 @@ Server server = new Server(9099);
 server.registerService("testService", new TestService());
 server.startServer();
 ```
+- spring 配置
+```xml
+todo
+```
 客户端使用
 - 提供短连接调用方式
 ```java
