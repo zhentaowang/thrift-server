@@ -1,4 +1,4 @@
 .arcconfig
 .idea/*
 target/*
-server.iml
+*.iml
