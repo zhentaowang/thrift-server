@@ -2,20 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-<<<<<<< HEAD
 
     <groupId>com.wyun.thrift</groupId>
     <artifactId>server</artifactId>
     <version>2.2-RELEASE</version>
 
-    <name>personality</name>
-=======
-    <groupId>com.zhiweicloud</groupId>
-    <artifactId>guest-thrift</artifactId>
-    <packaging>jar</packaging>
-    <version>1.9</version>
-    <name>Guest Thrift</name>
->>>>>>> 99025204e502f9be02673f0d7d664f17dceb241f
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -76,7 +67,6 @@
             <groupId>org.apache.thrift</groupId>
             <artifactId>libthrift</artifactId>
             <version>${libthrift.version}</version>
-<<<<<<< HEAD
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -96,19 +86,11 @@
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
             <optional>true</optional>
-=======
-        </dependency>
-        <dependency>
-            <groupId>com.wyun.thrift</groupId>
-            <artifactId>server</artifactId>
-            <version>${thrift.server.version}</version>
->>>>>>> 99025204e502f9be02673f0d7d664f17dceb241f
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-<<<<<<< HEAD
             <!--<plugin>-->
                 <!--<groupId>org.apache.thrift.tools</groupId>-->
                 <!--<artifactId>maven-thrift-plugin</artifactId>-->
@@ -126,7 +108,6 @@
                     <!--</execution>-->
                 <!--</executions>-->
             <!--</plugin>-->
-=======
             <!-- Deploy -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -150,7 +131,6 @@
                 </configuration>
             </plugin>
             <!-- Compiler -->
->>>>>>> 99025204e502f9be02673f0d7d664f17dceb241f
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
