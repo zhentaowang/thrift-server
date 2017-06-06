@@ -6,7 +6,7 @@
 
     <groupId>com.wyun.thrift</groupId>
     <artifactId>server</artifactId>
-    <version>1.0-RELEASE</version>
+    <version>2.2-RELEASE</version>
 
     <name>personality</name>
     <url>http://maven.apache.org</url>
@@ -24,33 +24,57 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <properties>
+        <spring.version>4.2.5.RELEASE</spring.version>
+        <fastjson.version>1.2.11</fastjson.version>
+        <libthrift.version>0.9.3</libthrift.version>
+        <wyun.utils.version>2.0-RELEASE</wyun.utils.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.apache.thrift</groupId>
             <artifactId>libthrift</artifactId>
-            <version>0.9.3</version>
+            <version>${libthrift.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.wyun.utils</groupId>
+            <artifactId>utils</artifactId>
+            <version>${wyun.utils.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.thrift.tools</groupId>
-                <artifactId>maven-thrift-plugin</artifactId>
-                <version>0.1.11</version>
-                <configuration>
-                    <thriftExecutable>E:\SOFT\Thrift\thrift-0.9.3.exe</thriftExecutable>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>thrift-sources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.thrift.tools</groupId>-->
+                <!--<artifactId>maven-thrift-plugin</artifactId>-->
+                <!--<version>0.1.11</version>-->
+                <!--<configuration>-->
+                    <!--<thriftExecutable>E:\SOFT\Thrift\thrift-0.9.3.exe</thriftExecutable>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>thrift-sources</id>-->
+                        <!--<phase>generate-sources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>compile</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
