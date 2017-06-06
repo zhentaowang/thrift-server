@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wyun.thrift.server.*;
 import com.wyun.thrift.server.business.IBusinessService;
-import com.wyun.utils.SpringBeanUtil;
 import org.apache.thrift.TException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.ByteBuffer;
 
@@ -15,13 +13,15 @@ import java.nio.ByteBuffer;
  * Date:2017/2/27
  * Time:18:56
  */
-public class WyunServiceImpl implements MyService.Iface{
-    @Autowired
-    SpringBeanUtil springBeanUtil;
+public class MyServiceImpl implements MyService.Iface{
+    private IBusinessService businessService;
+
+    public MyServiceImpl(IBusinessService businessService) {
+        this.businessService = businessService;
+    }
 
     @Override
-    public Response send(Request request) throws ServiceException, TException {
-        String serviceName = request.getServiceName();
+    public Response send(Request request) throws TException {
         JSONObject paramJSON = null;
         try {
             byte [] paramJSON_bytes = request.getParamJSON();
@@ -31,20 +31,12 @@ public class WyunServiceImpl implements MyService.Iface{
             }
         } catch(Exception e) {
         }
-        IBusinessService businessService=null;
-        try {
-            businessService=  springBeanUtil.getBean(serviceName);
-        } catch (Exception  e) {
-            e.printStackTrace();
-        }
-        JSONObject result;
-        result = businessService.handle(paramJSON);
+        JSONObject result = businessService.handle(paramJSON);
         String resultString= JSON.toJSONString(result);
         byte[] resultBytes = resultString.getBytes();
         ByteBuffer returnByteBuffer = ByteBuffer.allocate(resultBytes.length);
         returnByteBuffer.put(resultBytes);
         returnByteBuffer.flip();
-        Response response = new Response(RESCODE._200, returnByteBuffer);
-        return response;
+        return new Response(RESCODE._200, returnByteBuffer);
     }
 }
