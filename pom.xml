@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+<<<<<<< HEAD
 
     <groupId>com.wyun.thrift</groupId>
     <artifactId>server</artifactId>
     <version>2.2-RELEASE</version>
 
     <name>personality</name>
+=======
+    <groupId>com.zhiweicloud</groupId>
+    <artifactId>guest-thrift</artifactId>
+    <packaging>jar</packaging>
+    <version>1.9</version>
+    <name>Guest Thrift</name>
+>>>>>>> 99025204e502f9be02673f0d7d664f17dceb241f
     <url>http://maven.apache.org</url>
 
-    <distributionManagement>
-        <repository>
-            <id>releases</id>
-            <name>Release Repository</name>
-            <url>http://121.43.184.1:7777/nexus/content/repositories/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>Snapshot Repository</name>
-            <url>http://121.43.184.1:7777/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <properties>
+        <encoding>UTF-8</encoding>
+        <spring.version>4.2.5.RELEASE</spring.version>
+        <mysql.version>5.1.38</mysql.version>
+        <fastjson.version>1.2.11</fastjson.version>
+        <jdk.version>1.8</jdk.version>
+        <maven.plugin.version>3.3</maven.plugin.version>
+        <maven.surefire.plugin.version>2.6</maven.surefire.plugin.version>
+        <java.version>1.8</java.version>
+        <cors.filter.version>1.3.2</cors.filter.version>
+        <libthrift.version>0.9.3</libthrift.version>
+        <thrift.server.version>1.0-RELEASE</thrift.server.version>
+    </properties>
 
     <properties>
         <spring.version>4.2.5.RELEASE</spring.version>
@@ -31,10 +39,44 @@
         <wyun.utils.version>2.0-RELEASE</wyun.utils.version>
     </properties>
     <dependencies>
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!--通用Mapper-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+        <!-- thrift 公共类 -->
         <dependency>
             <groupId>org.apache.thrift</groupId>
             <artifactId>libthrift</artifactId>
             <version>${libthrift.version}</version>
+<<<<<<< HEAD
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -54,10 +96,19 @@
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
             <optional>true</optional>
+=======
+        </dependency>
+        <dependency>
+            <groupId>com.wyun.thrift</groupId>
+            <artifactId>server</artifactId>
+            <version>${thrift.server.version}</version>
+>>>>>>> 99025204e502f9be02673f0d7d664f17dceb241f
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
+<<<<<<< HEAD
             <!--<plugin>-->
                 <!--<groupId>org.apache.thrift.tools</groupId>-->
                 <!--<artifactId>maven-thrift-plugin</artifactId>-->
@@ -75,17 +126,48 @@
                     <!--</execution>-->
                 <!--</executions>-->
             <!--</plugin>-->
+=======
+            <!-- Deploy -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.zhiweicloud.guest.Main</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+            <!-- Compiler -->
+>>>>>>> 99025204e502f9be02673f0d7d664f17dceb241f
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>${maven.plugin.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>utf8</encoding>
+                    <source>${jdk.version}</source> <!-- 源代码使用的开发版本 -->
+                    <target>${jdk.version}</target> <!-- 需要生成的目标class文件的编译版本 -->
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
-        <defaultGoal>compile</defaultGoal>
     </build>
 </project>
