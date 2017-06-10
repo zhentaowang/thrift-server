@@ -1,18 +1,15 @@
 package com.wyun.thrift.server.server;
 
 import com.wyun.thrift.server.MyService;
-import com.wyun.thrift.server.business.IBusinessService;
+import com.wyun.thrift.server.business.BusinessServiceMap;
 import com.wyun.thrift.server.business.TestService;
-import com.wyun.thrift.server.processor.MyServiceImpl;
-import org.apache.thrift.TMultiplexedProcessor;
+import com.wyun.thrift.server.processor.WyunServiceImpl;
 import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 
-import java.nio.channels.Selector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,7 +26,11 @@ public class Server {
         this.serverPort = serverPort;
     }
 
-    private TMultiplexedProcessor tMultiplexedProcessor = new TMultiplexedProcessor();
+    public void setProcessor(MyService.Processor processor) {
+        this.processor = processor;
+    }
+
+    private MyService.Iface processor;
 
     public void setServerPort(int serverPort) {
         this.serverPort = serverPort;
@@ -37,10 +38,6 @@ public class Server {
 
     ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    public void registerService(String name, IBusinessService instance) {
-        MyServiceImpl myService = new MyServiceImpl(instance);
-        tMultiplexedProcessor.registerProcessor(name, new MyService.Processor<>(myService));
-    }
 
     public void startServer() {
         try {
@@ -48,7 +45,7 @@ public class Server {
             // Selector这个类，是不是很熟悉。
 //            serverTransport.registerSelector(Selector.open());
             TThreadedSelectorServer.Args tArgs = new TThreadedSelectorServer.Args(serverTransport);
-            tArgs.processor(tMultiplexedProcessor);
+            tArgs.processor(processor);
             tArgs.transportFactory(new TFramedTransport.Factory());
 //            tArgs.executorService(Executors.newFixedThreadPool(20));
             tArgs.protocolFactory(new TBinaryProtocol.Factory());
@@ -67,7 +64,9 @@ public class Server {
 
     public static void main(String[] args) {
         Server server = new Server(9099);
-        server.registerService("testService", new TestService());
+        BusinessServiceMap businessServiceMap=new BusinessServiceMap();
+        WyunServiceImpl wyunServiceImpl=new WyunServiceImpl(businessServiceMap);
+        server.setProcessor(wyunServiceImpl);
         server.startServer();
     }
 }
