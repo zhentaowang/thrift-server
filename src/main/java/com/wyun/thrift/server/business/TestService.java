@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class TestService implements IBusinessService {
     @Override
-    public JSONObject handle(JSONObject request) {
+    public JSONObject handle(String operation, JSONObject request) {
         String key = request.getString("key");
         int i = request.getInteger("int");
         return JSONObject.parseObject("{\"key\":\"" + key + "\",\"value\":" + i + "}");

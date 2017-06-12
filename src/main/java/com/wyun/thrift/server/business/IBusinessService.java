@@ -10,6 +10,6 @@ public interface IBusinessService {
 
 //    IBusinessService INSTANCE=null;
 
-    JSONObject handle(JSONObject request);
+    JSONObject handle(String operation,JSONObject request);
 
 }

@@ -7,9 +7,11 @@
 package com.wyun.thrift.server;
 
 
+import java.util.Map;
+import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum EXCCODE implements TEnum {
+public enum EXCCODE implements org.apache.thrift.TEnum {
   PARAMNOTFOUND(2001),
   SERVICENOTFOUND(2002);
 

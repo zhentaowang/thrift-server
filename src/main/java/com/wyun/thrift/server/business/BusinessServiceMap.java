@@ -15,7 +15,11 @@ public class BusinessServiceMap {
 
     public JSONObject handle(String serviceName, String operation, JSONObject request) {
         IBusinessService businessService=serviceMap.get(serviceName);
-        JSONObject result=businessService.handle(request);
+        JSONObject result=businessService.handle(operation,request);
         return result;
+    }
+
+    public void registerService(String serviceNmae,IBusinessService businessService){
+        serviceMap.put(serviceNmae,businessService);
     }
 }

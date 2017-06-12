@@ -29,11 +29,8 @@ public class ShortConnectionClient {
         } catch (TTransportException e) {
             e.printStackTrace();
         }
-        ;
         TProtocol protocol = new TBinaryProtocol(transport);
-        //use multiplexed protocol
-        TMultiplexedProtocol multiplexedProtocol = new TMultiplexedProtocol(protocol, serviceName);
-        MyService.Client client = new MyService.Client(multiplexedProtocol);
+        MyService.Client client = new MyService.Client(protocol);
         Response response = null;
         try {
             response = client.send(request);
@@ -45,7 +42,7 @@ public class ShortConnectionClient {
     }
     public static void main(String[] args) {
         ByteBuffer byteBuffer = ByteBuffer.wrap("{\"key\":\"abcde\", \"int\":100}".getBytes());
-        Response response = ShortConnectionClient.send("localhost", 9099, new Request(byteBuffer, "testService"));
+        Response response = ShortConnectionClient.send("localhost", 9099, new Request(byteBuffer, "testService","test"));
         System.out.println(response);
     }
 

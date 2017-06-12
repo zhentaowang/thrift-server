@@ -7,9 +7,11 @@
 package com.wyun.thrift.server;
 
 
+import java.util.Map;
+import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum RESCODE implements TEnum {
+public enum RESCODE implements org.apache.thrift.TEnum {
   _200(200),
   _500(500),
   _400(400);

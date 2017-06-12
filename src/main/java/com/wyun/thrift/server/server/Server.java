@@ -4,12 +4,14 @@ import com.wyun.thrift.server.MyService;
 import com.wyun.thrift.server.business.BusinessServiceMap;
 import com.wyun.thrift.server.business.TestService;
 import com.wyun.thrift.server.processor.WyunServiceImpl;
+import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 
+import java.nio.channels.Selector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,11 +28,11 @@ public class Server {
         this.serverPort = serverPort;
     }
 
-    public void setProcessor(MyService.Processor processor) {
-        this.processor = processor;
+    public void setWyunServiceImpl(MyService.Iface wyunServiceImpl) {
+        this.wyunServiceImpl = wyunServiceImpl;
     }
 
-    private MyService.Iface processor;
+    private MyService.Iface wyunServiceImpl;
 
     public void setServerPort(int serverPort) {
         this.serverPort = serverPort;
@@ -41,13 +43,12 @@ public class Server {
 
     public void startServer() {
         try {
+            TProcessor tprocessor = new MyService.Processor<MyService.Iface>(wyunServiceImpl);
             TNonblockingServerSocket serverTransport = new TNonblockingServerSocket(serverPort);
-            // Selector这个类，是不是很熟悉。
-//            serverTransport.registerSelector(Selector.open());
+            serverTransport.registerSelector(Selector.open());
             TThreadedSelectorServer.Args tArgs = new TThreadedSelectorServer.Args(serverTransport);
-            tArgs.processor(processor);
+            tArgs.processor(tprocessor);
             tArgs.transportFactory(new TFramedTransport.Factory());
-//            tArgs.executorService(Executors.newFixedThreadPool(20));
             tArgs.protocolFactory(new TBinaryProtocol.Factory());
             TServer server = new TThreadedSelectorServer(tArgs);
             System.out.println("Thrift Server start....");
@@ -64,9 +65,10 @@ public class Server {
 
     public static void main(String[] args) {
         Server server = new Server(9099);
-        BusinessServiceMap businessServiceMap=new BusinessServiceMap();
-        WyunServiceImpl wyunServiceImpl=new WyunServiceImpl(businessServiceMap);
-        server.setProcessor(wyunServiceImpl);
+        BusinessServiceMap businessServiceMap = new BusinessServiceMap();
+        businessServiceMap.registerService("testService",new TestService());
+        WyunServiceImpl wyunServiceImpl = new WyunServiceImpl(businessServiceMap);
+        server.setWyunServiceImpl(wyunServiceImpl);
         server.startServer();
     }
 }
