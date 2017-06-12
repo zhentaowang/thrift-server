@@ -6,7 +6,7 @@ struct Request {
     # 服务调用者请求的服务名，使用serviceName属性进行传递
     2:required string serviceName
     #具体service下执行某个operation
-    3:required string operation
+    3:string operation
 }
 
 # 这个结构体，定义了服务提供者的返回信息
