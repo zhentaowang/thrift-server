@@ -5,7 +5,7 @@
 
     <groupId>com.wyun.thrift</groupId>
     <artifactId>server</artifactId>
-    <version>3.0-RELEASE</version>
+    <version>3.1-RELEASE</version>
 
     <url>http://maven.apache.org</url>
 
