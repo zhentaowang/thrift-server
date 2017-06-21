@@ -8,10 +8,10 @@ import (
 	"log"
 	"net"
 	"os"
-	"public-service/conf"
 	"time"
-	"wyun-thrift/thrift/gen-go/server"
-    "wyun-thrift/thrift/pool"
+	"wyun-thrift/src/pool"
+	"wyun-thrift/src/gen-go/server"
+	"wyun-thrift/src/conf"
 )
 
 type service struct {
@@ -24,7 +24,7 @@ var Service = &service{}
 
 func init() {
 	fmt.Println("init  hahahahah")
-	configByte, err := ioutil.ReadFile("config.yml")
+	configByte, err := ioutil.ReadFile("conf.yml")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func init() {
 	conf.TConfig = conf.T{}
 	err = yaml.Unmarshal(configByte, &conf.TConfig)
 	if nil != err {
-		log.Panic("thrift load config error: ", err)
+		log.Panic("thrift load conf error: ", err)
 	}
 	// client
     Service.Pool = &pool.Pool{

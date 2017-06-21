@@ -1,35 +1,69 @@
-协议
-```java
-TNonblockingServerSocket serverTransport = new TNonblockingServerSocket(serverPort);    //非阻塞式服务
-TThreadedSelectorServer.Args tArgs = new TThreadedSelectorServer.Args(serverTransport);
-tArgs.processor(tMultiplexedProcessor);                 //multiple processor，多处理器
-tArgs.transportFactory(new TFramedTransport.Factory()); //设置窗口
-tArgs.protocolFactory(new TBinaryProtocol.Factory());   //二进制传输
-TServer server = new TThreadedSelectorServer(tArgs);
-```
-客户端与服务端对应
-```java
-TTransport transport = new TFramedTransport(new TSocket(host, port));   //设置窗口
-transport.open();
-TProtocol protocol = new TBinaryProtocol(transport);    //二进制传输
-//use multiplexed protocol
-TMultiplexedProtocol multiplexedProtocol = new TMultiplexedProtocol(protocol, serviceName); //设置处理器名称
-MyService.Client client = new MyService.Client(multiplexedProtocol);
-```
 服务端使用
-```java
-Server server = new Server(9099);
-server.registerService("testService", new TestService());
-server.startServer();
+
+router.go
+```go
+import "wyun-thrift/src/gen-go/server"
+
+type BusinessServiceImpl struct {
+}
+
+// 通过 BusinessServiceImpl 实现 IBusinessService 接口的 Send 方法，从而实现 IBusinessService 接口
+func (msi *BusinessServiceImpl) Handle(operation string, paramJSON []byte) (r *server.Response, err error) {
+
+	paramInput := make(map[string]interface{})
+	json.Unmarshal(paramJSON, &paramInput)
+
+	switch request.Operation {
+	case <<your operation name>>:
+		// TODO 业务逻辑
+	}
+	...
+}
 ```
-- spring 配置
-```xml
-todo
+main.go
+```go
+import "wyun-thrift/src/server"
+
+// 创建 BusinessServiceMap, 并注册支持的 service
+businessServiceMap := &business.BusinessServiceMap{
+	ServiceMap: make(map[string]business.IBusinessService),
+}
+businessServiceMap.RegisterService("businessService", routers.GetHandler())
+
+wyunServiceImpl := processor.WyunServiceImpl{
+	BusinessServiceMap: businessServiceMap,
+}
+server.StartServer(thrift_server_address, thrift_server_port, &wyunServiceImpl) // thrift server
+
 ```
 客户端使用
-- 提供短连接调用方式
-```java
-ByteBuffer byteBuffer = ByteBuffer.wrap("{\"key\":\"abcde\", \"int\":100}".getBytes());
-Response response = ShortConnectionClient.send("localhost", 9099, new Request(byteBuffer, "testService"));
-System.out.println(response);
+```go
+
+import (
+	"wyun-thrift/src/gen-go/server"
+	"wyun-thrift/src/client"
+	)
+
+	service := client.Service //申明一个请求服务
+	service.Host = beego.AppConfig.String("thrift_client_address") // 初始化请求地址
+	service.Port = beego.AppConfig.String("thrift_client_port") // 初始化请求端口
+	pooledClient, err := service.Pool.Get()  //从连接池获取thrift client
+	if err != nil {
+		log.Println("Thrift pool get client error", err)
+		return
+	}
+	defer service.Pool.Put(pooledClient, false)
+
+	rawClient, ok := pooledClient.(*server.MyServiceClient)
+	if !ok {
+		log.Println("convert to raw client failed")
+		return
+	}
+
+	req := server.NewRequest() //创建request
+	req.ServiceName = <<your service name>>
+	req.Operation = <<your operation name>>
+	paramInput := make(map[string]interface{})
+	req.ParamJSON, _ = json.Marshal(paramInput)
+	r, err = rawClient.Send(req) //发送request
 ```
