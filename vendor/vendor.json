@@ -1,0 +1,19 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "S0xnKEe2vxPlps1dmQwRiNPKvps=",
+			"path": "git.apache.org/thrift.git/lib/go/thrift",
+			"revision": "2b1b32c2836c21ce012d39ebc02c8488d67d4cef",
+			"revisionTime": "2017-05-30T10:44:56Z"
+		},
+		{
+			"checksumSHA1": "0eIf9S2wU7EjKgg3qGPKI+Z6RJA=",
+			"path": "gopkg.in/yaml.v2",
+			"revision": "cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b",
+			"revisionTime": "2017-04-07T17:21:22Z"
+		}
+	],
+	"rootPath": "wyun-thrift"
+}
