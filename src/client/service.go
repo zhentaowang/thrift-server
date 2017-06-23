@@ -9,9 +9,9 @@ import (
 	"net"
 	"os"
 	"time"
-	"wyun-thrift/src/pool"
-	"wyun-thrift/src/gen-go/server"
-	"wyun-thrift/src/conf"
+	"thrift-server/src/pool"
+	"thrift-server/src/gen-go/server"
+	"thrift-server/src/conf"
 )
 
 type service struct {
