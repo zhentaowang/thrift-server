@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"git.apache.org/thrift.git/lib/go/thrift"
-	"thrift-server/gen-go/server"
+	"code.aliyun.com/wyunshare/thrift-server/gen-go/server"
 )
 
 func StartServer(address string, port string, handler server.MyService) {

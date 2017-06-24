@@ -2,9 +2,9 @@ package thriftserver
 
 import (
 	"testing"
-	"thrift-server/business"
-	"thrift-server/processor"
-	"thrift-server/gen-go/server"
+	"code.aliyun.com/wyunshare/thrift-server/business"
+	"code.aliyun.com/wyunshare/thrift-server/processor"
+	"code.aliyun.com/wyunshare/thrift-server/gen-go/server"
 )
 type BusinessServiceImpl struct {}
 func (msi *BusinessServiceImpl) Handle(operation string, paramJSON []byte) (r *server.Response, err error) {
