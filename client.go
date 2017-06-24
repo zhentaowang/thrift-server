@@ -6,7 +6,6 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
-	"net"
 	"os"
 	"time"
 	"code.aliyun.com/wyunshare/thrift-server/pool"
@@ -14,7 +13,7 @@ import (
 	"code.aliyun.com/wyunshare/thrift-server/gen-go/server"
 )
 
-func GetPool(host string, port string) (*pool.Pool) {
+func GetPool(hostPort string) (*pool.Pool) {
 	configByte, err := ioutil.ReadFile("conf.yml")
 	if err != nil {
 		log.Fatal(err)
@@ -32,7 +31,7 @@ func GetPool(host string, port string) (*pool.Pool) {
 			transportFactory := thrift.NewTFramedTransportFactory(thrift.NewTTransportFactory())
 			protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
 
-			transport, err := thrift.NewTSocket(net.JoinHostPort(host, port))
+			transport, err := thrift.NewTSocket(hostPort)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, "error resolving address:", err)
 				os.Exit(1)
@@ -41,7 +40,7 @@ func GetPool(host string, port string) (*pool.Pool) {
 			useTransport := transportFactory.GetTransport(transport)
 			client := server.NewMyServiceClientFactory(useTransport, protocolFactory)
 			if err := transport.Open(); err != nil {
-				fmt.Fprintln(os.Stderr, "Error opening socket to"+host+":"+port, " ", err)
+				fmt.Fprintln(os.Stderr, "Error opening socket to"+hostPort + " ", err)
 				os.Exit(1)
 			}
 			return client, nil
