@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"log"
 	"fmt"
+	"net"
 )
 type BusinessServiceImpl struct {}
 func (msi *BusinessServiceImpl) Handle(operation string, paramJSON []byte) (r *server.Response, err error) {
@@ -35,7 +36,7 @@ func TestStartServer(t *testing.T) {
 	}
 	go StartServer("localhost", "9092", &wyunServiceImpl)
 
-	po := GetPool("localhost", "9092")
+	po := GetPool(net.JoinHostPort("localhost", "9092"))
 	pooledClient, err := po.Get() //从连接池获取thrift client
 	if err != nil {
 		log.Println("Thrift pool get client error", err)
@@ -49,8 +50,6 @@ func TestStartServer(t *testing.T) {
 		log.Println("convert to raw client failed")
 		return
 	}
-
-	//req := &server.Request{[]byte(dict), "name", "test"}
 
 	req := server.NewRequest() //创建request
 	req.ServiceName = "businessService"
