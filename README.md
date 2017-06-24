@@ -1,9 +1,14 @@
+安装
+```bash
+go get code.aliyun.com/wyunshare/thrift-server
+govendor add code.aliyun.com/wyunshare/thrift-server
+```
 服务端使用
 
 router.go
 ```go
 import (
-	"thrift-server/src/gen-go/server"
+	"code.aliyun.com/wyunshare/thrift-server/gen-go/server"
 	"encoding/json"
 )
 
@@ -33,14 +38,22 @@ func (msi *BusinessServiceImpl) Handle(operation string, paramJSON []byte) (r *s
 
 }
 ```
-main.go
+main.go(单个service)
+```go
+import "code.aliyun.com/wyunshare/thrift-server"
+
+type BusinessServiceImpl struct {
+}
+
+StartSingleServer("0.0.0.0", "9093", "businessService", &BusinessServiceImpl{})
+```
+main.go(多个service)
 ```go
 
 import (
-	"thrift-server/src/business"
-	"thrift-server/src/processor"
-	"thrift-server/src/server"
-	"servicego/src/router"
+	"code.aliyun.com/wyunshare/thrift-server/business"
+	"code.aliyun.com/wyunshare/thrift-server/processor"
+	"code.aliyun.com/wyunshare/thrift-server/server"
 )
 
 type BusinessServiceImpl struct {
@@ -54,7 +67,7 @@ func main() {
 	businessServiceMap := &business.BusinessServiceMap{
 		ServiceMap: make(map[string]business.IBusinessService),
 	}
-	businessServiceMap.RegisterService("businessService", &router.BusinessServiceImpl{})
+	businessServiceMap.RegisterService("businessService", &BusinessServiceImpl{})
 
 	wyunServiceImpl := processor.WyunServiceImpl{
 		BusinessServiceMap: businessServiceMap,
@@ -68,47 +81,36 @@ func main() {
 ```go
 
 import (
-	"thrift-server/gen-go/server"
-	"thrift-server"
+	"code.aliyun.com/wyunshare/thrift-server/gen-go/server"
+	"code.aliyun.com/wyunshare/thrift-server"
 	"log"
 	"encoding/json"
 )
 
 func main() {
 
-	const host = "localhost"
-	const port = "8888"
-	dict := make(map[string]string)
-	dict["d"] = "a"
-
-	service := client.Service //申明一个请求服务
-	service.Host = host       // 初始化请求地址
-	service.Port = port       // 初始化请求端口
-
-	pooledClient, err := service.Pool.Get() //从连接池获取thrift client
-	if err != nil {
-		log.Println("Thrift pool get client error", err)
-		return
-	}
-
-	defer service.Pool.Put(pooledClient, false)
-
-	rawClient, ok := pooledClient.(*server.MyServiceClient)
-	if !ok {
-		log.Println("convert to raw client failed")
-		return
-	}
-
-	//req := &server.Request{[]byte(dict), "name", "test"}
-
-	req := server.NewRequest() //创建request
-	req.ServiceName = "test_service"
-	req.Operation = "test"
-
-	paramInput := make(map[string]interface{})
-
-	req.ParamJSON, _ = json.Marshal(paramInput)
-
-	r, err := rawClient.Send(req) //发送request
-}
+		po := GetPool(net.JoinHostPort("localhost", "9092"))
+		pooledClient, err := po.Get() //从连接池获取thrift client
+		if err != nil {
+			log.Println("Thrift pool get client error", err)
+			return
+		}
+	
+		defer po.Put(pooledClient, false)
+	
+		rawClient, ok := pooledClient.(*server.MyServiceClient)
+		if !ok {
+			log.Println("convert to raw client failed")
+			return
+		}
+	
+		req := server.NewRequest() //创建request
+		req.ServiceName = "businessService"
+		req.Operation = "test"
+	
+		paramInput := make(map[string]interface{})
+	
+		req.ParamJSON, _ = json.Marshal(paramInput)
+	
+		r, err := rawClient.Send(req) //发送reque	
 ```
