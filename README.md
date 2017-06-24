@@ -68,8 +68,8 @@ func main() {
 ```go
 
 import (
-	"wyun-thrift/thrift/gen-go/server"
-	"wyun-thrift/thrift/client"
+	"thrift-server/gen-go/server"
+	"thrift-server"
 	"log"
 	"encoding/json"
 )

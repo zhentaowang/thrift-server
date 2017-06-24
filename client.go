@@ -1,4 +1,4 @@
-package client
+package thriftserver
 
 import (
 	"fmt"
@@ -9,9 +9,9 @@ import (
 	"net"
 	"os"
 	"time"
-	"thrift-server/src/pool"
-	"thrift-server/src/gen-go/server"
-	"thrift-server/src/conf"
+	"thrift-server/pool"
+	"thrift-server/gen-go/server"
+	"thrift-server/conf"
 )
 
 type service struct {
@@ -23,7 +23,6 @@ type service struct {
 var Service = &service{}
 
 func init() {
-	fmt.Println("init  hahahahah")
 	configByte, err := ioutil.ReadFile("conf.yml")
 	if err != nil {
 		log.Fatal(err)

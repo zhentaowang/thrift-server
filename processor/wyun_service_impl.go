@@ -1,8 +1,8 @@
 package processor
 
 import (
-	"wyun-thrift/src/business"
-	"wyun-thrift/src/gen-go/server"
+	"thrift-server/business"
+	"thrift-server/gen-go/server"
 )
 
 type WyunServiceImpl struct{

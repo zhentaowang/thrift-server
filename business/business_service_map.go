@@ -1,6 +1,6 @@
 package business
 
-import "wyun-thrift/src/gen-go/server"
+import "thrift-server/gen-go/server"
 
 type BusinessServiceMap struct {
 	ServiceMap map[string]IBusinessService
