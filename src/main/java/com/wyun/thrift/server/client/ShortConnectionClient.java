@@ -42,7 +42,7 @@ public class ShortConnectionClient {
     }
     public static void main(String[] args) {
         ByteBuffer byteBuffer = ByteBuffer.wrap("{\"key\":\"abcde\", \"int\":100}".getBytes());
-        Response response = ShortConnectionClient.send("localhost", 9099, new Request(byteBuffer, "testService","test"));
+        Response response = ShortConnectionClient.send("localhost", 9002, new Request(byteBuffer, "testService","test"));
         System.out.println(response);
     }
 

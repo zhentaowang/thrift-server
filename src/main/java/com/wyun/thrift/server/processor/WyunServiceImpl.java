@@ -32,12 +32,7 @@ public class WyunServiceImpl implements MyService.Iface {
             }
         } catch (Exception e) {
         }
-        JSONObject result = businessServiceMap.handle(request.serviceName, request.operation, paramJSON);
-        String resultString = JSON.toJSONString(result);
-        byte[] resultBytes = resultString.getBytes();
-        ByteBuffer returnByteBuffer = ByteBuffer.allocate(resultBytes.length);
-        returnByteBuffer.put(resultBytes);
-        returnByteBuffer.flip();
-        return new Response(RESCODE._200, returnByteBuffer);
+        Response response = businessServiceMap.handle(request.serviceName, request.operation, paramJSON);
+        return response;
     }
 }

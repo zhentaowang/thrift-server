@@ -1,6 +1,7 @@
 package com.wyun.thrift.server.business;
 
 import com.alibaba.fastjson.JSONObject;
+import com.wyun.thrift.server.Response;
 
 /**
  * User:xsg
@@ -8,8 +9,6 @@ import com.alibaba.fastjson.JSONObject;
  */
 public interface IBusinessService {
 
-//    IBusinessService INSTANCE=null;
-
-    JSONObject handle(String operation,JSONObject request);
+    Response handle(String operation, JSONObject request);
 
 }
