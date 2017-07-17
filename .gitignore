@@ -2,3 +2,7 @@
 .idea/*
 target/*
 *.iml
+dist
+*.egg-info
+build.sh
+build
